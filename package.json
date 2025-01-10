@@ -1,0 +1,23 @@
+{
+  "name": "create-latest-mern-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Pulkit Garg",
+  "license": "ISC",
+  "description": "",
+  "bin": {
+    "create-latest-mern-app": "./bin/create-latest-mern-app.js"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "execa": "^9.5.2",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "prompts": "^2.4.2"
+  }
+}
