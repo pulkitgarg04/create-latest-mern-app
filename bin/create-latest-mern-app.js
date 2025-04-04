@@ -6,7 +6,6 @@ import fs from "fs";
 import path from "path";
 import prompts from "prompts";
 import chalk from "chalk";
-import { execa } from "execa";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -33,7 +32,7 @@ async function run() {
     type: "text",
     name: "projectName",
     message: "What would you like to name your project?",
-    initial: "my-project",
+    initial: "my-app",
   });
 
   if (!projectName) {
@@ -41,156 +40,81 @@ async function run() {
     process.exit(1);
   }
 
-  const { projectType } = await prompts({
-    type: "select",
-    name: "projectType",
-    message: "Select the project type:",
-    choices: [
-      { title: "Next.js App (TypeScript)", value: "next-app" },
-      { title: "Next.js App (JavaScript)", value: "next-app-js" },
-      { title: "React App (JavaScript)", value: "react-app" },
-      { title: "React App (TypeScript)", value: "react-ts-app" },
-    ],
+  const projectDir = path.resolve(process.cwd(), projectName);
+  fs.mkdirSync(projectDir, { recursive: true });
+
+  const { includeFrontend } = await prompts({
+    type: "confirm",
+    name: "includeFrontend",
+    message: "Do you want to include a frontend (React)?",
+    initial: true,
   });
 
-  if (!projectType) {
-    error("No project type selected. Exiting.");
-    process.exit(1);
-  }
-
-  let destDir = path.resolve(process.cwd(), projectName);
-  let srcDir = path.join(templatesDir, projectType);
-
-  if (projectType === "react-app" || projectType === "react-ts-app") {
-    destDir = path.join(destDir, "client");
-  }
-
-  if (!fs.existsSync(srcDir)) {
-    error(`Template for ${projectType} not found at ${srcDir}`);
-    process.exit(1);
-  }
-
-  if (projectType === "react-app" || projectType === "react-ts-app") {
-    const { installTailwind } = await prompts({
-      type: "confirm",
-      name: "installTailwind",
-      message: "Do you want to install and configure Tailwind CSS?",
-      initial: true,
+  if (includeFrontend) {
+    const { frontendLang } = await prompts({
+      type: "select",
+      name: "frontendLang",
+      message: "Choose language for frontend:",
+      choices: [
+        { title: "JavaScript", value: "react" },
+        { title: "TypeScript", value: "react-ts" },
+      ],
     });
 
-    if (installTailwind) {
-      info("Installing and configuring Tailwind CSS...");
-      try {
-        if (!fs.existsSync(destDir)) {
-          fs.mkdirSync(destDir, { recursive: true });
-        }
+    const frontendSrcDir = path.join(templatesDir, frontendLang);
+    const frontendDestDir = path.join(projectDir, "client");
 
-        await execa(
-          "npm",
-          ["install", "tailwindcss", "postcss", "autoprefixer", "--save-dev"],
-          { cwd: destDir, stdio: "inherit" }
-        );
-
-        await execa("npx", ["tailwindcss", "init"], {
-          cwd: destDir,
-          stdio: "inherit",
-        });
-
-        const tailwindConfig = {
-          content: ["./src/**/*.{html,js,jsx,ts,tsx}", "./public/index.html"],
-          theme: {
-            extend: {},
-          },
-          plugins: [],
-        };
-
-        fs.writeFileSync(
-          path.join(destDir, "tailwind.config.js"),
-          `module.exports = ${JSON.stringify(tailwindConfig, null, 2)}\n`
-        );
-
-        const postcssConfig = {
-          plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-          },
-        };
-
-        fs.writeFileSync(
-          path.join(destDir, "postcss.config.js"),
-          `module.exports = ${JSON.stringify(postcssConfig, null, 2)}\n`
-        );
-
-        const cssFilePath = path.join(destDir, "src", "index.css");
-        if (!fs.existsSync(cssFilePath)) {
-          fs.mkdirSync(path.join(destDir, "src"), { recursive: true });
-          fs.writeFileSync(cssFilePath, "");
-        }
-        const tailwindImports = `@tailwind base;\n@tailwind components;\n@tailwind utilities;\n`;
-        fs.appendFileSync(cssFilePath, tailwindImports);
-
-        success("Tailwind CSS installed and configured successfully.");
-      } catch (err) {
-        error(`Failed to install or configure Tailwind CSS: ${err.message}`);
-        process.exit(1);
-      }
+    if (!fs.existsSync(frontendSrcDir)) {
+      error(`Frontend template not found for ${frontendLang}`);
+      process.exit(1);
     }
 
-    const { includeServer } = await prompts({
-      type: "confirm",
-      name: "includeServer",
-      message: "Do you want to include a server backend?",
-      initial: false,
+    info("Creating frontend...");
+    createDir(frontendSrcDir, frontendDestDir);
+    success("Frontend created.");
+  }
+
+  const { includeBackend } = await prompts({
+    type: "confirm",
+    name: "includeBackend",
+    message: "Do you want to include a backend (Express)?",
+    initial: true,
+  });
+
+  if (includeBackend) {
+    const { backendLang } = await prompts({
+      type: "select",
+      name: "backendLang",
+      message: "Choose language for backend:",
+      choices: [
+        { title: "JavaScript", value: "server" },
+        { title: "TypeScript", value: "server-ts" },
+      ],
     });
 
-    if (includeServer) {
-      const { serverType } = await prompts({
-        type: "select",
-        name: "serverType",
-        message: "Select the database for server type:",
-        choices: [
-          { title: "Mongoose (MongoDB)", value: "server-mongoose" },
-          { title: "Prisma (SQL)", value: "server-prisma" },
-        ],
-      });
+    const backendSrcDir = path.join(templatesDir, backendLang);
+    const backendDestDir = path.join(projectDir, "server");
 
-      if (serverType) {
-        const serverSrcDir = path.join(templatesDir, serverType);
-        const serverDestDir = path.join(destDir, "../server");
-
-        if (fs.existsSync(serverSrcDir)) {
-          info("Creating server files...");
-          createDir(serverSrcDir, serverDestDir);
-          success("Server files created successfully.");
-        } else {
-          error(`Template for ${serverType} not found.`);
-          process.exit(1);
-        }
-      }
+    if (!fs.existsSync(backendSrcDir)) {
+      error(`Backend template not found for ${backendLang}`);
+      process.exit(1);
     }
+
+    info("Creating backend...");
+    createDir(backendSrcDir, backendDestDir);
+    success("Backend created.");
   }
 
-  info(`Creating ${projectType} project files at ${chalk.cyan(destDir)}...`);
-  try {
-    createDir(srcDir, destDir);
-    success("Project files created successfully.");
-  } catch (err) {
-    error(`Failed to create project files: ${err.message}`);
-    process.exit(1);
-  }
-
+  info(`\nProject created at ${chalk.cyan(projectDir)}`);
   console.log(chalk.yellow.bold("\nNext Steps:"));
-  console.log(
-    `  1. Navigate to your project folder: ${chalk.cyan(`cd ${projectName}`)}`
-  );
-  console.log(`  2. Install dependencies: ${chalk.cyan("npm install")}`);
-  console.log(
-    `  3. Start your development server: ${chalk.cyan(
-      "npm start"
-    )} (or ${chalk.cyan("npm run dev")} for Next.js)`
-  );
-
-  success("Setup complete. Happy coding!");
+  console.log(`  1. Navigate: ${chalk.cyan(`cd ${projectName}`)}`);
+  if (includeFrontend) {
+    console.log(`  2. Frontend: ${chalk.cyan(`cd client && npm install && npm start`)}`);
+  }
+  if (includeBackend) {
+    console.log(`  3. Backend: ${chalk.cyan(`cd server && npm install && npm start`)}`);
+  }
+  success("\nSetup complete. Happy coding!");
 }
 
 run().catch((err) => {

@@ -1,16 +1,17 @@
 # create-latest-mern-app
 
-A CLI tool to quickly scaffold a Next.js or MERN (MongoDB, Express, React, Node.js) application with options for adding Tailwind CSS, TypeScript, and a server backend.
+A CLI tool to quickly scaffold a modern **MERN** (MongoDB, Express, React, Node.js) application with optional **TypeScript** support for both frontend and backend.
 
 ## Features
-- Create React or Next.js applications.
-- Optionally configure TypeScript for React projects.
-- Tailwind CSS integration.
-- Backend server setup with either Mongoose (MongoDB) or Prisma (SQL).
-- Preconfigured templates for efficient development.
+- Scaffold a full-stack MERN app in seconds.
+- Choose **JavaScript** or **TypeScript** for both frontend and backend.
+- Frontend built with **React**.
+- Backend powered by **Express**.
+- Simple, extendable template structure.
+- Organized project structure with `/client` and `/server`.
 
 ## Installation
-You don't need to install this package manually. You can use it directly with `npx`:
+You can use the CLI tool directly with `npx` (no global install needed):
 
 ```bash
 npx create-latest-mern-app
@@ -23,13 +24,30 @@ npx create-latest-mern-app
 ```
 
 2. Follow the prompts to:
-- Name your project.
-- Choose the project type (React/Next.js, JavaScript/TypeScript).
-- Optionally include Tailwind CSS.
-- Decide whether to include a server backend.
+- Name your project
+- Choose frontend (React) with JS or TS
+- Choose backend (Express) with JS or TS
 
 3. Navigate to your project directory and start coding:
 ```bash
 cd <your-project-name>
-npm install
 ```
+
+4. Install dependencies:
+
+If you included a frontend:
+```bash
+cd client
+npm install
+npm start
+```
+
+If you included a backend:
+```bash
+cd server
+npm install
+npm start
+```
+
+## Author
+Made with ❤️ by [Pulkit Garg](https://www.github.com/pulkitgarg04)
