@@ -109,10 +109,10 @@ async function run() {
   console.log(chalk.yellow.bold("\nNext Steps:"));
   console.log(`  1. Navigate: ${chalk.cyan(`cd ${projectName}`)}`);
   if (includeFrontend) {
-    console.log(`  2. Frontend: ${chalk.cyan(`cd client && npm install && npm start`)}`);
+    console.log(`  2. Frontend: ${chalk.cyan(`cd client && npm install && npm run dev`)}`);
   }
   if (includeBackend) {
-    console.log(`  3. Backend: ${chalk.cyan(`cd server && npm install && npm start`)}`);
+    console.log(`  3. Backend: ${chalk.cyan(`cd server && npm install && npm run dev`)}`);
   }
   success("\nSetup complete. Happy coding!");
 }
