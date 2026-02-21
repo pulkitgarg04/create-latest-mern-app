@@ -1,6 +1,6 @@
 {
   "name": "create-latest-mern-app",
-  "version": "2.0.0",
+  "version": "3.0.2",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -22,8 +22,20 @@
   "author": "Pulkit Garg",
   "license": "MIT",
   "description": "Initialize Node.js, React.js, and Next.js projects with ease.",
+  "files": [
+    "bin",
+    "templates",
+    "README.md",
+    "!templates/**/node_modules",
+    "!templates/**/node_modules/**",
+    "!templates/**/dist",
+    "!templates/**/dist/**"
+  ],
   "bin": {
-    "create-latest-mern-app": "./bin/create-latest-mern-app.js"
+    "create-latest-mern-app": "bin/create-latest-mern-app.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "homepage": "https://github.com/pulkitgarg04/create-latest-mern-app#readme",
   "bugs": {
@@ -31,8 +43,6 @@
   },
   "dependencies": {
     "chalk": "^5.4.1",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7",
     "prompts": "^2.4.2"
   }
 }

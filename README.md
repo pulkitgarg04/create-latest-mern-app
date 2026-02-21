@@ -1,53 +1,50 @@
 # create-latest-mern-app
 
-A CLI tool to quickly scaffold a modern **MERN** (MongoDB, Express, React, Node.js) application with optional **TypeScript** support for both frontend and backend.
+A CLI to scaffold modern MERN projects quickly, with JavaScript or TypeScript templates for both frontend and backend.
 
 ## Features
-- Scaffold a full-stack MERN app in seconds.
-- Choose **JavaScript** or **TypeScript** for both frontend and backend.
-- Frontend built with **React**.
-- Backend powered by **Express**.
-- Simple, extendable template structure.
-- Organized project structure with `/client` and `/server`.
+- Interactive setup flow for frontend and backend.
+- React frontend templates (`react`, `react-ts`).
+- Express backend templates (`server`, `server-ts`).
+- Creates clean `/client` and `/server` folders based on your selections.
 
-## Installation
-You can use the CLI tool directly with `npx` (no global install needed):
+## Quick Start
 
 ```bash
-npx create-latest-mern-app
+npx create-latest-mern-app <your-app-name>
 ```
 
-## Usage
-1. Run the CLI:
+## Prompt Flow
+When you run the CLI, it asks:
+1. Project name
+2. Do you want frontend?
+3. Do you want backend?
+4. Frontend language (if frontend selected)
+5. Backend language (if backend selected)
+
+If both frontend and backend are not selected, the CLI exits safely with a friendly message and creates nothing.
+
+## Run the Generated App
+
 ```bash
-npx create-latest-mern-app
+cd <your-app-name>
 ```
 
-2. Follow the prompts to:
-- Name your project
-- Choose frontend (React) with JS or TS
-- Choose backend (Express) with JS or TS
+If frontend was selected:
 
-3. Navigate to your project directory and start coding:
-```bash
-cd <your-project-name>
-```
-
-4. Install dependencies:
-
-If you included a frontend:
 ```bash
 cd client
 npm install
-npm start
+npm run dev
 ```
 
-If you included a backend:
+If backend was selected:
+
 ```bash
 cd server
 npm install
-npm start
+npm run dev
 ```
 
 ## Author
-Made with ❤️ by [Pulkit Garg](https://www.github.com/pulkitgarg04)
+Made with ❤️ by [Pulkit Garg](https://github.com/pulkitgarg04)
