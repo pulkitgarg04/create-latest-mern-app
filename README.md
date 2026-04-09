@@ -1,5 +1,7 @@
 # create-latest-mern-app
 
+![total downloads](https://img.shields.io/badge/total%20downloads-500+-blue?style=for-the-badge&logo=npm)
+
 A CLI to scaffold modern MERN projects quickly, with JavaScript or TypeScript templates for both frontend and backend.
 
 ## Features
