@@ -17,7 +17,16 @@
     "frontend",
     "javascript",
     "typescript",
-    "tailwindcss"
+    "tailwindcss",
+    "mern",
+    "scaffold",
+    "boilerplate",
+    "vite",
+    "express",
+    "mongodb",
+    "zustand",
+    "typescript",
+    "starter-template"
   ],
   "author": "Pulkit Garg",
   "license": "MIT",
