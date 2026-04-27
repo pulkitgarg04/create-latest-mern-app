@@ -23,6 +23,7 @@ A CLI to scaffold modern MERN projects quickly, with JavaScript or TypeScript te
 - React frontend templates (`react`, `react-ts`).
 - Express backend templates (`server`, `server-ts`).
 - Creates clean `/client` and `/server` folders based on your selections.
+- Docker-ready templates with generated `docker-compose.yml`.
 
 ## Quick Start
 
@@ -59,7 +60,17 @@ If backend was selected:
 ```bash
 cd server
 npm install
+cp .env.example .env
 npm run dev
+```
+
+## Run with Docker
+
+Generated apps include Dockerfiles and a root `docker-compose.yml`.
+
+```bash
+cd <your-app-name>
+docker compose up --build
 ```
 
 ## Contributing

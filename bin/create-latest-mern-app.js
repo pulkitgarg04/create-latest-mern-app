@@ -23,6 +23,65 @@ const copyDir = (src, dest) => {
   }
 };
 
+const getDockerComposeContent = ({ includeFrontend, includeBackend }) => {
+  const lines = [
+    'services:',
+  ];
+
+  if (includeBackend) {
+    lines.push(
+      '  mongo:',
+      '    image: mongo:7',
+      '    restart: unless-stopped',
+      '    ports:',
+      '      - "27017:27017"',
+      '    volumes:',
+      '      - mongo-data:/data/db',
+      '',
+      '  server:',
+      '    build: ./server',
+      '    restart: unless-stopped',
+      '    environment:',
+      '      NODE_ENV: development',
+      '      PORT: 8080',
+      '      CLIENT_URL: http://localhost:5173',
+      '      MONGO_URI: mongodb://mongo:27017/mern_app',
+      '      JWT_SECRET: change_this_in_production',
+      '    ports:',
+      '      - "8080:8080"',
+      '    depends_on:',
+      '      - mongo'
+    );
+  }
+
+  if (includeFrontend) {
+    if (includeBackend) {
+      lines.push('');
+    }
+
+    lines.push(
+      '  client:',
+      '    build: ./client',
+      '    restart: unless-stopped',
+      '    ports:',
+      '      - "5173:5173"'
+    );
+
+    if (includeBackend) {
+      lines.push(
+        '    depends_on:',
+        '      - server'
+      );
+    }
+  }
+
+  if (includeBackend) {
+    lines.push('', 'volumes:', '  mongo-data:');
+  }
+
+  return `${lines.join("\n")}\n`;
+};
+
 const log = {
   success: (msg) => console.log(chalk.green.bold(`✔ ${msg}`)),
   error: (msg) => console.log(chalk.red.bold(`✖ ${msg}`)),
@@ -246,6 +305,14 @@ async function run() {
     log.success("Backend created.");
   }
 
+  const dockerComposePath = path.join(projectDir, "docker-compose.yml");
+  fs.writeFileSync(
+    dockerComposePath,
+    getDockerComposeContent({ includeFrontend, includeBackend }),
+    "utf8"
+  );
+  log.success("Docker compose file created.");
+
   console.log();
   console.log(chalk.white.bold("Next Steps"));
   console.log(chalk.gray("─────────────────────────────────────"));
@@ -263,17 +330,20 @@ async function run() {
 
   if (includeBackend) {
     console.log(
-      `  ${chalk.gray(`${step}.`)} ${chalk.cyan("cd server && npm install && npm run dev")}`
+      `  ${chalk.gray(`${step}.`)} ${chalk.cyan("cd server && npm install && cp .env.example .env && npm run dev")}`
     );
     step++;
 
     console.log();
     log.info(
-      `Don't forget to create a ${chalk.yellow(".env")} file inside ${chalk.yellow(
-        "server/"
-      )} with your MongoDB URI and JWT secret.`
+      `Copy ${chalk.yellow("server/.env.example")} to ${chalk.yellow(
+        "server/.env"
+      )} and update values before running the backend.`
     );
   }
+
+  console.log();
+  console.log(`  ${chalk.gray(`${step}.`)} ${chalk.cyan("docker compose up --build")}`);
 
   console.log();
   log.success("Setup complete. Happy coding!\n");
