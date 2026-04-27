@@ -9,6 +9,8 @@ Create a modern MERN app in under a minute.
 
 A CLI to scaffold modern MERN projects quickly, with JavaScript or TypeScript templates for both frontend and backend.
 
+![create-latest-mern-app CLI demo](./assets/create-latest-mern-app-cli-demo.gif.gif)
+
 ## Why This Over Others?
 - Focused: purpose-built for MERN, no extra framework noise.
 - Flexible: choose frontend only, backend only, or full stack.
