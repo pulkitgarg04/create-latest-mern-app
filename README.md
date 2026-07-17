@@ -1,7 +1,7 @@
 # create-latest-mern-app
 
 [![npm version](https://img.shields.io/npm/v/create-latest-mern-app?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/create-latest-mern-app)
-[![license](https://img.shields.io/npm/l/create-latest-mern-app?style=for-the-badge)](https://github.com/pulkitgarg04/create-latest-mern-app/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/create-latest-mern-app?style=for-the-badge)](https://github.com/pulkitgxrg/create-latest-mern-app/blob/main/LICENSE)
 [![node support](https://img.shields.io/badge/node-%3E%3D18-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 ![total downloads](https://img.shields.io/badge/total%20downloads-500+-blue?style=for-the-badge&logo=npm)
 
@@ -78,4 +78,4 @@ docker compose up --build
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines, setup steps, and PR expectations.
 
 ## Author
-Made with ❤️ by [Pulkit Garg](https://github.com/pulkitgarg04)
+Made with ❤️ by [Pulkit Garg](https://github.com/pulkitgxrg)

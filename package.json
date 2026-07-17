@@ -1,6 +1,6 @@
 {
   "name": "create-latest-mern-app",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pulkitgarg04/create-latest-mern-app.git"
+    "url": "git+https://github.com/pulkitgxrg/create-latest-mern-app.git"
   },
   "keywords": [
     "mern",
@@ -57,9 +57,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/pulkitgarg04/create-latest-mern-app#readme",
+  "homepage": "https://github.com/pulkitgxrg/create-latest-mern-app#readme",
   "bugs": {
-    "url": "https://github.com/pulkitgarg04/create-latest-mern-app/issues"
+    "url": "https://github.com/pulkitgxrg/create-latest-mern-app/issues"
   },
   "dependencies": {
     "chalk": "^5.4.1",
